@@ -4,9 +4,10 @@ import "../styles/piece.css";
 
 export function Piece({ piece, setPieces }) {
   function clickHandler() {
-    const theoricalMovements = piece.getPossibleMovements();
-    const movements = Object.values(theoricalMovements);
-    const movement = movements[0];
+    const possibleMovements = piece.getPossibleMovements();
+    console.log(Object.keys(possibleMovements));
+    const movements = Object.values(possibleMovements);
+    const movement = movements[movements.length - 1];
     for (let tuple of movement) {
       const [piece, square] = tuple;
       setPieces(piece.moveTo(square));

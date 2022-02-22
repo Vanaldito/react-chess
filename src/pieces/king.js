@@ -9,7 +9,8 @@ export class King extends Piece {
     this.notMoved = true; // To castle
   }
 
-  getTheoricalMovements() {
+  getTheoricalMovementsWithoutCastle() {
+    // No includes the castle;
     const directions = [
       [0, 1],
       [1, 0], 
@@ -36,12 +37,84 @@ export class King extends Piece {
     return movements;
   }
 
+  getTheoricalMovements() {
+    const movements = this.getTheoricalMovementsWithoutCastle();
+    if (this.isInCheck()) return movements;
+
+    this._addKingsideCastle(movements);
+    this._addQueensideCastle(movements);
+
+    return movements;
+  }
+
+  _addKingsideCastle(movements) {
+    if (!this.notMoved) return;
+
+    const [x, y] = this.square;
+
+    for (let i = 1; i < 3; i++) {
+      if (this.pieces[x + i][y] !== null) return;
+
+      this.moveTo([x + i, y]);
+      if (this.isInCheck()) {
+        this.moveTo([x, y]);
+        return;
+      }
+
+      this.moveTo([x, y]);
+    }
+
+    const piece = this.pieces[x + 3][y]
+    if (piece === null) return;
+    if (piece.name !== "rook") return;
+    if (!piece.notMoved) return;
+
+    movements[[x + 2, y].toString()] = [
+      [this, [x + 2, y]],
+      [piece, [x + 1, y]],
+    ];
+  }
+
+  _addQueensideCastle(movements) {
+    if (!this.notMoved) return;
+
+    const [x, y] = this.square;
+
+    for (let i = 1; i < 4; i++) {
+      if (this.pieces[x - i][y] !== null) return;
+    }
+
+    for (let i = 1; i < 3; i++) {
+      this.moveTo([x - i, y]);
+      if (this.isInCheck()) {
+        this.moveTo([x, y]);
+        return;
+      }
+
+      this.moveTo([x, y]);
+    }
+
+    const piece = this.pieces[x - 4][y];
+
+    if (piece === null) return;
+    if (piece.name !== "rook") return;
+    if (!piece.notMoved) return;
+
+    movements[[x - 2, y].toString()] = [
+      [this, [x - 2, y]],
+      [piece, [x - 1, y]],
+    ];
+  }
+
   isInCheck() {
     for (let piece of this.pieces.reduce((acc, curr) => acc.concat(curr))) {
       if (piece === null) continue;
       if (piece.color === this.color) continue;
       
-      const movements = piece.getTheoricalMovements();
+      const movements = piece.name === "king" ? 
+        piece.getTheoricalMovementsWithoutCastle() : 
+        piece.getTheoricalMovements();
+
       if (this.square.toString() in movements) {
         return true;
       }

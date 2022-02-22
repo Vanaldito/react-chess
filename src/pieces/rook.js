@@ -25,7 +25,12 @@ export class Rook extends Piece {
 
       while (true) {
         if (x < 0 || x > 7 || y < 0 || y > 7) break;
-        if (this.pieces[x][y] !== null && this.pieces[x][y].color === this.color) break;
+        if (this.pieces[x][y] !== null) {
+          if (this.pieces[x][y].color !== this.color) {
+            movements[[x, y].toString()] =  [[this, [x, y]]];
+          }
+          break;
+        }
 
         movements[[x, y].toString()] =  [[this, [x, y]]];
 
