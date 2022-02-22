@@ -1,0 +1,14 @@
+.board {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: repeat(8, 1fr);
+  border: 1px solid #758f57;
+}
+
+.black-square {
+  background-color: #758f57;
+}
+
+.white-square {
+  background-color: #ecead1;
+}
