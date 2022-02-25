@@ -5,14 +5,33 @@ export class Piece {
     this.image = image;
     this.square = initialSquare;
     this.pieces = pieces;
+    this.notMoved = true;
   }  
+
+  move(movements) {
+    for (let [piece, square] of movements) {
+      if (piece.name === "pawn" 
+        && Math.abs(piece.square[1] - square[1]) === 2) {
+        piece.enPassant = true;        
+      } 
+      piece.moveTo(square);
+      piece.notMoved = false;
+    }
+
+    // En passant capture can only be done on the next move 
+    for (let piece of this.pieces.reduce((acc, curr) => acc.concat(curr))) {
+      if (piece && piece.name === "pawn" && piece.color !== this.color) {
+        piece.enPassant = false;
+      }
+    }
+
+    return [...this.pieces]
+  }
 
   moveTo(square) {
     this.pieces[this.square[0]][this.square[1]] = null;
     this.pieces[square[0]][square[1]] = this;
     this.square = square;
-
-    return [...this.pieces];
   }
 
   getTheoricalMovements() {}
@@ -21,15 +40,15 @@ export class Piece {
     const theoricalMovements = this.getTheoricalMovements();
     const possibleMovements = {};
 
-    const king = this.findKing();
+    const king = this.findKing(this.color);
 
     for (let [key, movements] of Object.entries(theoricalMovements)) {
       const initialSquares = [];
-      const currentPieces = [];
+      const initialPieces = []; // For the delete pieces
 
       for (let [piece, square] of movements) {
         initialSquares.push([piece, piece.square]);
-        currentPieces.push([this.pieces[square[0]][square[1]], square]);
+        initialPieces.push([this.pieces[square[0]][square[1]], square]);
         piece.moveTo(square);
       }
 
@@ -37,25 +56,39 @@ export class Piece {
         possibleMovements[key] = movements;
       }
 
+      // Return to the initial position
       while (initialSquares.length) {
         const [piece, initialSquare] = initialSquares.pop();
         piece.moveTo(initialSquare);
 
-        const [currentPiece, square] = currentPieces.pop();
-        this.pieces[square[0]][square[1]] = currentPiece;
+        const [initialPiece, square] = initialPieces.pop();
+        this.pieces[square[0]][square[1]] = initialPiece;
       }
     }
 
     return possibleMovements;
   }
 
-  findKing() {
+  findKing(color) {
     for (let piece of this.pieces.reduce((acc, curr) => acc.concat(curr))) {
       if (piece === null) continue;
-      if (piece.name === "king" && piece.color === this.color) {
+      if (piece.name === "king" && piece.color === color) {
         return piece;
       }
     }
     return null;
+  }
+
+  win() {
+    const kingColor = this.color === "white" ? "black" : "white"; 
+    if (this.findKing(kingColor).isInCheck()) {
+      for (let piece in this.pieces.reduce((acc, curr) => acc.concat(curr))) {
+        if (piece.color !== kingColor) continue;
+        if (Object.keys(piece.possibleMovements()).length) {
+          return false;
+        }
+      }
+    }
+    return true
   }
 }

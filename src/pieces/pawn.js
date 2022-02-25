@@ -26,6 +26,7 @@ export class Pawn extends Piece {
       // En Passant Capture
       this._addEnPassantCapture(
         [x + xDirection, y],
+        yDirection,
         movements
       );
     }
@@ -60,7 +61,7 @@ export class Pawn extends Piece {
     }   
   }
 
-  _addEnPassantCapture(square, movements) {
+  _addEnPassantCapture(square, yDirection, movements) {
     const [x, y] = square;
 
     if (x < 0 || x > 7 || y < 0 || y > 7) return;
@@ -72,9 +73,9 @@ export class Pawn extends Piece {
     if (enPassantPiece.name !== "pawn") return;
     if (!enPassantPiece.enPassant) return;
 
-    movements[square.toString()] = [
-      [enPassantPiece, square],
-      [this, square],
+    movements[[x, y + yDirection].toString()] = [
+      [enPassantPiece, [x, y + yDirection]],
+      [this, [x, y + yDirection]],
     ];
   }
 }

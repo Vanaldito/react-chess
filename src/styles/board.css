@@ -5,10 +5,9 @@
   border: 1px solid #758f57;
 }
 
-.black-square {
-  background-color: #758f57;
-}
-
-.white-square {
-  background-color: #ecead1;
+p.game-state {
+  color: white;
+  font-size: 25px;
+  margin-top: 20px;
+  text-align: center;
 }
