@@ -10,10 +10,6 @@ export class Piece {
 
   move(movements) {
     for (let [piece, square] of movements) {
-      if (piece.name === "pawn" 
-        && Math.abs(piece.square[1] - square[1]) === 2) {
-        piece.enPassant = true;        
-      } 
       piece.moveTo(square);
       piece.notMoved = false;
     }

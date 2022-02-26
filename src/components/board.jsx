@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 
 import { Square } from "./square";
+import { useActivePiece } from "../hooks/useActivePiece";
 import { createInitialPosition } from "../helpers/initial_position";
+import { inCheckmate } from "../helpers/checkmate";
+import { stalemate } from "../helpers/stalemate";
 
 import "../styles/board.css";
 
@@ -10,25 +13,21 @@ export function Board({ squareSize, movementSound }) {
 
   const [pieces, setPieces] = useState(createInitialPosition());
   const [whiteMove, setWhiteMove] = useState(true);
-  const [activePiece, setActivePiece] = useState(null);
-  const [activeSquares, setActiveSquares] = useState([]);
   const [gameActive, setGameActive] = useState(true);
+  const [activePiece, activeSquares, changeActivePiece] = useActivePiece();
 
   function clickAndDropHandler(square, piece) {
     if (!gameActive) return;
-
     if (activePiece) {
       const squareKey = square.toString();
 
       if (activeSquares.includes(squareKey)) {
         return moveActivePiece(squareKey);
       }
-
       if (piece && piece.square === activePiece.square) {
         return changeActivePiece(null);
       }
     }
-
     if (piece && canBeActivePiece(piece)) {
       return changeActivePiece(piece); 
     }
@@ -38,7 +37,6 @@ export function Board({ squareSize, movementSound }) {
 
   function dragStartHandler(piece) {
     if (!gameActive) return;
-
     if (canBeActivePiece(piece)) {
       changeActivePiece(piece);
     }
@@ -52,16 +50,6 @@ export function Board({ squareSize, movementSound }) {
     return false;
   }
 
-  function changeActivePiece(piece) {
-    if (piece) {
-      setActivePiece(piece);
-      setActiveSquares(Object.keys(piece.getPossibleMovements()));
-    } else {
-      setActivePiece(null);
-      setActiveSquares([]);
-    }
-  }
-
   function moveActivePiece(squareKey) {
     movementSound.current.play();
     setPieces(activePiece.move(activePiece.getPossibleMovements()[squareKey]));
@@ -69,56 +57,14 @@ export function Board({ squareSize, movementSound }) {
     changeActivePiece(null);
   }
 
-  function lose(color) {
-    let king;
-    for (let piece of pieces.reduce((acc, curr) => acc.concat(curr))) {
-      if (!piece || piece.color !== color) continue;
-
-      // Find the king
-      if (piece.name === "king") {
-        king = piece;
-      }
-      if (Object.keys(piece.getPossibleMovements()).length) {
-        return false;
-      } 
-    }
-
-    if (king.isInCheck()) {
-      return true;
-    }
-
-    return false;
-  }
-
-  function stalemate(color) {
-    let king;
-    for (let piece of pieces.reduce((acc, curr) => acc.concat(curr))) {
-      if (!piece || piece.color !== color) continue;
-
-      // Find the king
-      if (piece.name === "king") {
-        king = piece;
-      }
-      if (Object.keys(piece.getPossibleMovements()).length) {
-        return false;
-      } 
-    }
-
-    if (king.isInCheck()) {
-      return false;
-    }
-
-    return true;
-  }
-
   function getInfo() {
     const turn = whiteMove ? "white" : "black";
-    if (lose(turn)) {
+    if (inCheckmate(pieces, turn)) {
       if (gameActive) setGameActive(false);
       return `${whiteMove ? "Black" : "White"} win`;
     }
 
-    if (stalemate(turn)) {
+    if (stalemate(pieces, turn)) {
       if (gameActive) setGameActive(false);
       return "Stalemate";
     }

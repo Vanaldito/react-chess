@@ -78,4 +78,15 @@ export class Pawn extends Piece {
       [this, [x, y + yDirection]],
     ];
   }
+
+  move(movements) {
+    const initialYSquare = this.square[1];
+    const newPieces = super.move(movements);
+
+    if (Math.abs(initialYSquare - this.square[1]) === 2) {
+      this.enPassant = true;
+    }
+
+    return newPieces;
+  }
 }
