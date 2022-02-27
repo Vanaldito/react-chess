@@ -16,6 +16,7 @@ export function Board({ squareSize, movementSound }) {
   const [pieces, setPieces] = useState(createInitialPosition());
   const [whiteMove, setWhiteMove] = useState(true);
   const [activePiece, activeSquares, changeActivePiece] = useActivePiece();
+  const [movementsWithoutCaptures, setMovementsWithoutCaptures] = useState(0);
 
   function clickAndDropHandler(square, piece) {
     if (!gameActive) return;
@@ -55,7 +56,11 @@ export function Board({ squareSize, movementSound }) {
     movementSound.current.play();
 
     const possibleMovements = activePiece.getPossibleMovements();
-    setPieces(activePiece.move(possibleMovements[squareKey]));
+    setPieces(activePiece.move(
+      possibleMovements[squareKey],
+      movementsWithoutCaptures,
+      setMovementsWithoutCaptures,
+    ));
 
     setWhiteMove(!whiteMove);
     changeActivePiece(null);
@@ -65,12 +70,17 @@ export function Board({ squareSize, movementSound }) {
     const turn = whiteMove ? "white" : "black";
     if (inCheckmate(pieces, turn)) {
       if (gameActive) setGameActive(false);
-      return `${whiteMove ? "Black" : "White"} win`;
+      return `${whiteMove ? "BLACK" : "WHITE"} WIN!!`;
     }
 
     if (stalemate(pieces, turn)) {
       if (gameActive) setGameActive(false);
       return "Stalemate";
+    }
+
+    if (movementsWithoutCaptures === 100) {
+      if (gameActive) setGameActive(false);
+      return "Draws for 50 movements rule";
     }
 
     return `${turn[0].toUpperCase() + turn.slice(1)} move`;

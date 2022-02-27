@@ -8,10 +8,24 @@ export class Piece {
     this.notMoved = true;
   }  
 
-  move(movements) {
+  move(
+    movements, 
+    movementsWithoutCaptures, 
+    setMovementsWithoutCaptures
+  ) {
+    let resetMovementsWithoutCaptures = false;
     for (let [piece, square] of movements) {
+      if (piece.name === "pawn" || this.pieces[square[0]][square[1]] !== null) {
+        resetMovementsWithoutCaptures = true;
+      }
       piece.moveTo(square);
       piece.notMoved = false;
+    }
+
+    if (resetMovementsWithoutCaptures) {
+      setMovementsWithoutCaptures(0);
+    } else {
+      setMovementsWithoutCaptures(movementsWithoutCaptures + 1);
     }
 
     // En passant capture can only be done on the next move 

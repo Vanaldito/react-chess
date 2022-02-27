@@ -79,9 +79,17 @@ export class Pawn extends Piece {
     ];
   }
 
-  move(movements) {
+  move(
+    movements,
+    movementsWithoutCaptures,
+    setMovementsWithoutCaptures
+  ) {
     const initialYSquare = this.square[1];
-    const newPieces = super.move(movements);
+    const newPieces = super.move(
+      movements,
+      movementsWithoutCaptures,
+      setMovementsWithoutCaptures
+    );
 
     if (Math.abs(initialYSquare - this.square[1]) === 2) {
       this.enPassant = true;
