@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 
 import { Square } from "./square";
+import { PromotionMenu } from "./menu";
+
 import { useActivePiece } from "../hooks/useActivePiece";
 import { createInitialPosition } from "../helpers/initial_position";
 import { inCheckmate } from "../helpers/checkmate";
@@ -9,11 +11,10 @@ import { stalemate } from "../helpers/stalemate";
 import "../styles/board.css";
 
 export function Board({ squareSize, movementSound }) {
-  let boardArray = [];
 
+  const [gameActive, setGameActive] = useState(true);
   const [pieces, setPieces] = useState(createInitialPosition());
   const [whiteMove, setWhiteMove] = useState(true);
-  const [gameActive, setGameActive] = useState(true);
   const [activePiece, activeSquares, changeActivePiece] = useActivePiece();
 
   function clickAndDropHandler(square, piece) {
@@ -52,7 +53,10 @@ export function Board({ squareSize, movementSound }) {
 
   function moveActivePiece(squareKey) {
     movementSound.current.play();
-    setPieces(activePiece.move(activePiece.getPossibleMovements()[squareKey]));
+
+    const possibleMovements = activePiece.getPossibleMovements();
+    setPieces(activePiece.move(possibleMovements[squareKey]));
+
     setWhiteMove(!whiteMove);
     changeActivePiece(null);
   }
@@ -75,6 +79,8 @@ export function Board({ squareSize, movementSound }) {
   const info = getInfo();
 
   // Create the board
+  const boardArray = [];
+
   for (let i = 0; i < 8; i++) {
     for (let j = 0; j < 8; j++) {
       const color = (j - i) % 2 ? "black" : "white";
@@ -102,6 +108,15 @@ export function Board({ squareSize, movementSound }) {
     maxWidth: "90vw"
   };
 
+  const promotionPawn = pieces
+    .reduce((acc, curr) => acc.concat(curr))
+    .find(piece => {
+      if (!piece || piece.name !== "pawn") return false;
+      const endRow = piece.color === "white" ? 0 : 7; 
+      if (piece.square[1] === endRow) return true;
+      return false;
+    });
+
   return (
     <>
       <div 
@@ -109,6 +124,13 @@ export function Board({ squareSize, movementSound }) {
         style={boardStyle}
       >
         {boardArray}
+        { 
+          promotionPawn && <PromotionMenu 
+            promotionPawn={promotionPawn}
+            pieces={[...pieces]}
+            setPieces={setPieces}
+          />
+        }
       </div>
       <p className="game-state">{info}</p>
     </>

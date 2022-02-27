@@ -3,6 +3,7 @@
   grid-template-columns: repeat(8, 1fr);
   grid-template-rows: repeat(8, 1fr);
   border: 1px solid #758f57;
+  position: relative;
 }
 
 p.game-state {
