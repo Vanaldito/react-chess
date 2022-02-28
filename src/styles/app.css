@@ -10,3 +10,24 @@ body {
   align-items: center;
   background-color: #101010;
 }
+
+p.game-state {
+  color: white;
+  font-size: 25px;
+  margin-top: 20px;
+  text-align: center;
+}
+
+button.reset {
+  display: block;
+  border: none;
+  outline: none;
+  background: linear-gradient(to top, #00af00, #00ff00);
+  color: #ffffff;
+  font-size: 20px;
+  margin: 10px auto;
+  margin-bottom: 0;
+  padding: 12px;
+  cursor: pointer;
+  border-radius: 15px;
+}
