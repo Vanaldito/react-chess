@@ -5,14 +5,14 @@ import { Rook } from "../pieces/rook";
 import { Knight } from "../pieces/knight";
 import { Bishop } from "../pieces/bishop";
 
-import whiteQueen from "../images/queen_w.png"
-import blackQueen from "../images/queen_b.png"
-import whiteBishop from "../images/bishop_w.png"
-import blackBishop from "../images/bishop_b.png"
-import whiteRook from "../images/rook_w.png"
-import blackRook from "../images/rook_b.png"
-import whiteKnight from "../images/knight_w.png"
-import blackKnight from "../images/knight_b.png"
+import whiteQueen from "../images/queen_w.png";
+import blackQueen from "../images/queen_b.png";
+import whiteBishop from "../images/bishop_w.png";
+import blackBishop from "../images/bishop_b.png";
+import whiteRook from "../images/rook_w.png";
+import blackRook from "../images/rook_b.png";
+import whiteKnight from "../images/knight_w.png";
+import blackKnight from "../images/knight_b.png";
 
 import "../styles/menu.css";
 
@@ -44,19 +44,19 @@ export function PromotionMenu({ promotionPawn, pieces, setPieces }) {
       if (!menu || !menu.contains(e.target)) e.stopPropagation();
     }
 
-    window.addEventListener("click", withoutMovement, true)
+    window.addEventListener("click", withoutMovement, true);
     window.addEventListener("dragstart", withoutMovement, true);
 
     return () => {
       window.removeEventListener("click", withoutMovement, true);
       window.removeEventListener("dragstart", withoutMovement, true);
-    }
-  }, [])
+    };
+  }, []);
 
   function selectPiece(piece) {
     return () => {
       const [x, y] = promotionPawn.square;
-      switch(piece) {
+      switch (piece) {
         case "queen":
           pieces[x][y] = new Queen(promotionPawn.color, [x, y], pieces);
           break;
@@ -73,23 +73,21 @@ export function PromotionMenu({ promotionPawn, pieces, setPieces }) {
           break;
       }
       setPieces(pieces);
-    }
+    };
   }
 
   return (
     <div ref={menuRef} className="promotion-menu">
       <ul>
-        {
-          Object.keys(images).map(piece => (
-            <li key={piece}>
-              <img 
-                onClick={selectPiece(piece)}
-                src={images[piece]} 
-                alt="choice" 
-              />
-            </li>
-          ))
-        }
+        {Object.keys(images).map((piece) => (
+          <li key={piece}>
+            <img
+              onClick={selectPiece(piece)}
+              src={images[piece]}
+              alt="choice"
+            />
+          </li>
+        ))}
       </ul>
     </div>
   );

@@ -14,9 +14,5 @@ export function useActivePiece() {
     }
   }
 
-  return [
-    activePiece,
-    activeSquares,
-    changeActivePiece,
-  ];
+  return [activePiece, activeSquares, changeActivePiece];
 }

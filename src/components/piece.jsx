@@ -9,12 +9,12 @@ export function Piece({ piece, handleDragStart }) {
   }
 
   return (
-    <img 
+    <img
       onDragStart={dragStartHandler}
       draggable="true"
-      className="piece" 
+      className="piece"
       src={piece.image}
-      alt="piece" 
+      alt="piece"
     />
   );
 }

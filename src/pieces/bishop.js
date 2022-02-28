@@ -13,7 +13,7 @@ export class Bishop extends Piece {
       [1, 1],
       [-1, 1],
       [1, -1],
-      [-1, -1]
+      [-1, -1],
     ];
 
     const movements = {};
@@ -26,12 +26,12 @@ export class Bishop extends Piece {
         if (x < 0 || x > 7 || y < 0 || y > 7) break;
         if (this.pieces[x][y] !== null) {
           if (this.pieces[x][y].color !== this.color) {
-            movements[[x, y].toString()] =  [[this, [x, y]]];
+            movements[[x, y].toString()] = [[this, [x, y]]];
           }
           break;
         }
 
-        movements[[x, y].toString()] =  [[this, [x, y]]];
+        movements[[x, y].toString()] = [[this, [x, y]]];
 
         x += direction[0];
         y += direction[1];

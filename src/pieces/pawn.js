@@ -18,17 +18,10 @@ export class Pawn extends Piece {
 
     for (let xDirection of [-1, 1]) {
       // Diagonal Capture
-      this._addDiagonalCapture(
-        [x + xDirection, y + yDirection],
-        movements
-      );
+      this._addDiagonalCapture([x + xDirection, y + yDirection], movements);
 
       // En Passant Capture
-      this._addEnPassantCapture(
-        [x + xDirection, y],
-        yDirection,
-        movements
-      );
+      this._addEnPassantCapture([x + xDirection, y], yDirection, movements);
     }
 
     if (this.pieces[x][y + yDirection] !== null) {
@@ -36,9 +29,7 @@ export class Pawn extends Piece {
     }
 
     // Forward Pawn Move
-    movements[[x, y + yDirection].toString()] = [
-      [this, [x, y + yDirection]],
-    ];
+    movements[[x, y + yDirection].toString()] = [[this, [x, y + yDirection]]];
 
     if (this.notMoved && this.pieces[x][y + 2 * yDirection] === null) {
       movements[[x, y + 2 * yDirection].toString()] = [
@@ -58,7 +49,7 @@ export class Pawn extends Piece {
 
     if (diagonalPiece !== null && diagonalPiece.color !== this.color) {
       movements[square.toString()] = [[this, square]];
-    }   
+    }
   }
 
   _addEnPassantCapture(square, yDirection, movements) {
@@ -79,11 +70,7 @@ export class Pawn extends Piece {
     ];
   }
 
-  move(
-    movements,
-    movementsWithoutCaptures,
-    setMovementsWithoutCaptures
-  ) {
+  move(movements, movementsWithoutCaptures, setMovementsWithoutCaptures) {
     const initialYSquare = this.square[1];
     const newPieces = super.move(
       movements,

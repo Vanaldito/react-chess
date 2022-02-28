@@ -6,13 +6,9 @@ export class Piece {
     this.square = initialSquare;
     this.pieces = pieces;
     this.notMoved = true;
-  }  
+  }
 
-  move(
-    movements, 
-    movementsWithoutCaptures, 
-    setMovementsWithoutCaptures
-  ) {
+  move(movements, movementsWithoutCaptures, setMovementsWithoutCaptures) {
     let resetMovementsWithoutCaptures = false;
     for (let [piece, square] of movements) {
       if (piece.name === "pawn" || this.pieces[square[0]][square[1]] !== null) {
@@ -28,14 +24,14 @@ export class Piece {
       setMovementsWithoutCaptures(movementsWithoutCaptures + 1);
     }
 
-    // En passant capture can only be done on the next move 
+    // En passant capture can only be done on the next move
     for (let piece of this.pieces.reduce((acc, curr) => acc.concat(curr))) {
       if (piece && piece.name === "pawn" && piece.color !== this.color) {
         piece.enPassant = false;
       }
     }
 
-    return [...this.pieces]
+    return [...this.pieces];
   }
 
   moveTo(square) {
@@ -50,7 +46,7 @@ export class Piece {
     const theoricalMovements = this.getTheoricalMovements();
     const possibleMovements = {};
 
-    const king = this.findKing(this.color);
+    const king = this._findKing(this.color);
 
     for (let [key, movements] of Object.entries(theoricalMovements)) {
       const initialSquares = [];
@@ -79,7 +75,7 @@ export class Piece {
     return possibleMovements;
   }
 
-  findKing(color) {
+  _findKing(color) {
     for (let piece of this.pieces.reduce((acc, curr) => acc.concat(curr))) {
       if (piece === null) continue;
       if (piece.name === "king" && piece.color === color) {
@@ -87,18 +83,5 @@ export class Piece {
       }
     }
     return null;
-  }
-
-  win() {
-    const kingColor = this.color === "white" ? "black" : "white"; 
-    if (this.findKing(kingColor).isInCheck()) {
-      for (let piece in this.pieces.reduce((acc, curr) => acc.concat(curr))) {
-        if (piece.color !== kingColor) continue;
-        if (Object.keys(piece.possibleMovements()).length) {
-          return false;
-        }
-      }
-    }
-    return true
   }
 }

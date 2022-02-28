@@ -31,7 +31,7 @@ export function App() {
       }
     }
     if (piece && canBeActivePiece(piece)) {
-      return changeActivePiece(piece); 
+      return changeActivePiece(piece);
     }
 
     changeActivePiece(null);
@@ -56,11 +56,13 @@ export function App() {
     new Audio(movementsSound).play();
 
     const possibleMovements = activePiece.getPossibleMovements();
-    setPieces(activePiece.move(
-      possibleMovements[squareKey],
-      movementsWithoutCaptures,
-      setMovementsWithoutCaptures,
-    ));
+    setPieces(
+      activePiece.move(
+        possibleMovements[squareKey],
+        movementsWithoutCaptures,
+        setMovementsWithoutCaptures
+      )
+    );
 
     setWhiteMove(!whiteMove);
     changeActivePiece(null);
@@ -98,8 +100,8 @@ export function App() {
 
   return (
     <div>
-      <Board 
-        squareSize={70} 
+      <Board
+        squareSize={70}
         activeSquares={activeSquares}
         pieces={pieces}
         setPieces={setPieces}
@@ -107,10 +109,7 @@ export function App() {
         dragStartHandler={dragStartHandler}
       />
       <p className="game-state">{info}</p>
-      <button 
-        onClick={reset} 
-        className="reset"
-      >
+      <button onClick={reset} className="reset">
         {gameActive ? "Reset" : "Play again"}
       </button>
     </div>

@@ -13,13 +13,13 @@ export class King extends Piece {
     // No includes the castle;
     const directions = [
       [0, 1],
-      [1, 0], 
+      [1, 0],
       [0, -1],
       [-1, 0],
       [1, 1],
       [-1, 1],
       [1, -1],
-      [-1, -1]
+      [-1, -1],
     ];
 
     const movements = {};
@@ -29,9 +29,10 @@ export class King extends Piece {
       const y = this.square[1] + direction[1];
 
       if (x < 0 || x > 7 || y < 0 || y > 7) continue;
-      if (this.pieces[x][y] !== null && this.pieces[x][y].color === this.color) continue;
+      if (this.pieces[x][y] !== null && this.pieces[x][y].color === this.color)
+        continue;
 
-      movements[[x, y].toString()] =  [[this, [x, y]]];
+      movements[[x, y].toString()] = [[this, [x, y]]];
     }
 
     return movements;
@@ -64,7 +65,7 @@ export class King extends Piece {
       this.moveTo([x, y]);
     }
 
-    const piece = this.pieces[x + 3][y]
+    const piece = this.pieces[x + 3][y];
     if (piece === null) return;
     if (piece.name !== "rook") return;
     if (!piece.notMoved) return;
@@ -110,10 +111,11 @@ export class King extends Piece {
     for (let piece of this.pieces.reduce((acc, curr) => acc.concat(curr))) {
       if (piece === null) continue;
       if (piece.color === this.color) continue;
-      
-      const movements = piece.name === "king" ? 
-        piece.getTheoricalMovementsWithoutCastle() : 
-        piece.getTheoricalMovements();
+
+      const movements =
+        piece.name === "king"
+          ? piece.getTheoricalMovementsWithoutCastle()
+          : piece.getTheoricalMovements();
 
       if (this.square.toString() in movements) {
         return true;

@@ -10,7 +10,7 @@ export class Knight extends Piece {
 
   getTheoricalMovements(pieces) {
     const directions = [
-      [1, -2], 
+      [1, -2],
       [2, -1],
       [2, 1],
       [1, 2],
@@ -27,9 +27,10 @@ export class Knight extends Piece {
       const y = this.square[1] + direction[1];
 
       if (x < 0 || x > 7 || y < 0 || y > 7) continue;
-      if (this.pieces[x][y] !== null && this.pieces[x][y].color === this.color) continue;
+      if (this.pieces[x][y] !== null && this.pieces[x][y].color === this.color)
+        continue;
 
-      movements[[x, y].toString()] =  [[this, [x, y]]];
+      movements[[x, y].toString()] = [[this, [x, y]]];
     }
 
     return movements;

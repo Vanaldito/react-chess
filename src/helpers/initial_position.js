@@ -7,7 +7,7 @@ import { Pawn } from "../pieces/pawn";
 
 export function createInitialPosition() {
   function arrayOfLengthEight() {
-    return Array(8).fill(null)
+    return Array(8).fill(null);
   }
 
   // Create a 8x8 matrix
@@ -22,7 +22,7 @@ export function createInitialPosition() {
   array[3][0] = new Queen("black", [3, 0], array);
   array[4][0] = new King("black", [4, 0], array);
   for (let i = 0; i < 8; i++) {
-    array[i][1] = new Pawn("black", [i, 1], array)
+    array[i][1] = new Pawn("black", [i, 1], array);
   }
 
   array[0][7] = new Rook("white", [0, 7], array);
@@ -34,7 +34,7 @@ export function createInitialPosition() {
   array[3][7] = new Queen("white", [3, 7], array);
   array[4][7] = new King("white", [4, 7], array);
   for (let i = 0; i < 8; i++) {
-    array[i][6] = new Pawn("white", [i, 6], array)
+    array[i][6] = new Pawn("white", [i, 6], array);
   }
 
   return array;

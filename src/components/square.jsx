@@ -4,14 +4,13 @@ import { Piece } from "./piece";
 
 import "../styles/square.css";
 
-export function Square({ 
-    className,
-    square,
-    piece,
-    clickAndDropHandler,
-    dragStartHandler 
-  }) {
-
+export function Square({
+  className,
+  square,
+  piece,
+  clickAndDropHandler,
+  dragStartHandler,
+}) {
   function clickHandler() {
     clickAndDropHandler(square, piece);
   }
@@ -19,7 +18,7 @@ export function Square({
   function dropHandler(e) {
     e.preventDefault();
     const dragPiece = e.dataTransfer.getData("piece");
-    clickAndDropHandler(square, dragPiece)
+    clickAndDropHandler(square, dragPiece);
   }
 
   function dragOverHandler(e) {
@@ -27,15 +26,13 @@ export function Square({
   }
 
   return (
-    <div 
+    <div
       onDragOver={dragOverHandler}
       onDrop={dropHandler}
       onClick={clickHandler}
       className={className}
     >
-      {
-        piece && <Piece piece={piece} handleDragStart={dragStartHandler} />
-      }
+      {piece && <Piece piece={piece} handleDragStart={dragStartHandler} />}
     </div>
   );
 }

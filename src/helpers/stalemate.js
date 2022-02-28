@@ -9,7 +9,7 @@ export function stalemate(pieces, color) {
     }
     if (Object.keys(piece.getPossibleMovements()).length) {
       return false;
-    } 
+    }
   }
 
   if (king.isInCheck()) {
