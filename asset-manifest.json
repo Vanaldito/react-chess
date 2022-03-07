@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/Vanaldito.github.io/react-chess/static/css/main.df6630e4.css",
-    "main.js": "/Vanaldito.github.io/react-chess/static/js/main.6dc2fe50.js",
-    "static/media/gray-circle.png": "/Vanaldito.github.io/react-chess/static/media/gray-circle.2cf7ced9ea60d201ce77.png",
-    "static/media/movements_sound.wav": "/Vanaldito.github.io/react-chess/static/media/movements_sound.a7304208d2c7d197085c.wav",
-    "index.html": "/Vanaldito.github.io/react-chess/index.html",
-    "main.df6630e4.css.map": "/Vanaldito.github.io/react-chess/static/css/main.df6630e4.css.map",
-    "main.6dc2fe50.js.map": "/Vanaldito.github.io/react-chess/static/js/main.6dc2fe50.js.map"
+    "main.css": "/react-chess/static/css/main.47b6b2b2.css",
+    "main.js": "/react-chess/static/js/main.b4c878ee.js",
+    "static/media/gray-circle.png": "/react-chess/static/media/gray-circle.2cf7ced9ea60d201ce77.png",
+    "static/media/movements_sound.wav": "/react-chess/static/media/movements_sound.a7304208d2c7d197085c.wav",
+    "index.html": "/react-chess/index.html",
+    "main.47b6b2b2.css.map": "/react-chess/static/css/main.47b6b2b2.css.map",
+    "main.b4c878ee.js.map": "/react-chess/static/js/main.b4c878ee.js.map"
   },
   "entrypoints": [
-    "static/css/main.df6630e4.css",
-    "static/js/main.6dc2fe50.js"
+    "static/css/main.47b6b2b2.css",
+    "static/js/main.b4c878ee.js"
   ]
 }
