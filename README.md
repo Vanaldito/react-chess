@@ -1,4 +1,4 @@
-# Contacts List app made with ReactJS
+# Chess game made with ReactJS
 
 ## How to run the app?
 
